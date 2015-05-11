@@ -13,7 +13,10 @@
 	</head>
 	<body>
 
-		<script src="three.js"></script>
+		<script src = "three.js"></script>
+		<script src = "shark.poly.js"></script>
+		<script src = "shark.coor.js"></script>
+		<script src = "modelLoader.js"></script>
 
 		<script type="x-shader/x-vertex" id="vertexShader">
 
@@ -68,16 +71,16 @@
 
 				var size = 150;
 
-				var geometryLines = new THREE.BoxGeometry( size, size, size );
-				var geometryTris = new THREE.BoxGeometry( size, size, size );
+				//var geometryLines = new THREE.BoxGeometry( size, size, size );
+				//var geometryTris = new THREE.BoxGeometry( size, size, size );
 
 				// wireframe using gl.LINES
 
-				var materialLines = new THREE.MeshBasicMaterial( { wireframe: true } );
+				//var materialLines = new THREE.MeshBasicMaterial( { wireframe: true } );
 
-				meshLines = new THREE.Mesh( geometryLines, materialLines );
-				meshLines.position.x = -150;
-				scene.add( meshLines );
+				//meshLines = new THREE.Mesh( geometryLines, materialLines );
+				//meshLines.position.x = -150;
+				//scene.add( meshLines );
 
 				//
 
@@ -86,30 +89,42 @@
 
 				// wireframe using gl.TRIANGLES (interpreted as triangles)
 
-				var attributesTris = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
-				var valuesTris = attributesTris.center.value;
+				//var attributesTris = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
+				//var valuesTris = attributesTris.center.value;
 
-				setupAttributes( geometryTris, valuesTris );
+				//setupAttributes( geometryTris, valuesTris );
 
-				var materialTris = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesTris, vertexShader: vertexShader, fragmentShader: fragmentShader } );
+				//var materialTris = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesTris, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
-				meshTris = new THREE.Mesh( geometryTris, materialTris );
-				meshTris.position.x = 150;
-				scene.add( meshTris );
+				//meshTris = new THREE.Mesh( geometryTris, materialTris );
+				//meshTris.position.x = 150;
+				//scene.add( meshTris );
 
 				// wireframe using gl.TRIANGLES (mixed triangles and quads)
+				var light = new THREE.PointLight(0xFFFFFF);
+				light.position.set(100, 200, 800);
+				scene.add(light);
+				
+				var aLight = new THREE.AmbientLight(0x333333);
+				aLight.position.set(light.position);
+				scene.add(aLight);
 
-				var mixedGeometry = new THREE.SphereGeometry( size / 2, 32, 16 );
+				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
+				var geometry = new THREE.Geometry;
+				loadModel(geometry, SHARK_POLY, SHARK_COORD);
+				geometry.computeFaceNormals();
+				geometry.computeVertexNormals();
+				var material = new THREE.MeshPhongMaterial({color: 0x660066, shininess: 20 });
 
-				var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
-				var valuesMixed = attributesMixed.center.value;
+				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
+				//var valuesMixed = attributesMixed.center.value;
 
-				setupAttributes( mixedGeometry, valuesMixed );
+				//setupAttributes( mixedGeometry, valuesMixed );
 
-				var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
+				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
-				meshMixed = new THREE.Mesh( mixedGeometry, materialMixed );
-				meshMixed.position.x = -150;
+				var meshMixed = new THREE.Mesh( geometry, material );
+				meshMixed.position.z = 700;
 				scene.add( meshMixed );
 
 
