@@ -102,19 +102,31 @@
 
 				// wireframe using gl.TRIANGLES (mixed triangles and quads)
 				var light = new THREE.PointLight(0xFFFFFF);
-				light.position.set(100, 200, 800);
+				light.position.set(50, 0, 675);
 				scene.add(light);
 				
 				var aLight = new THREE.AmbientLight(0x333333);
 				aLight.position.set(light.position);
 				scene.add(aLight);
+	
+				var m1 = new THREE.Matrix4();
+				var m2 = new THREE.Matrix4();
+				m1.makeRotationY(45);
+				m2.makeRotationZ(-25);
+				
+				var floorGeometry = new THREE.BoxGeometry( 10000, 10000, 1);
+				var floorMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide} );
+				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
 				var geometry = new THREE.Geometry;
 				loadModel(geometry, SHARK_POLY, SHARK_COORD);
+				geometry.applyMatrix(m2);
+				geometry.applyMatrix(m1);
 				geometry.computeFaceNormals();
 				geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0x660066, shininess: 20 });
+				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, opacity: 0.2});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
 				//var valuesMixed = attributesMixed.center.value;
@@ -124,7 +136,8 @@
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
 				var meshMixed = new THREE.Mesh( geometry, material );
-				meshMixed.position.z = 700;
+				meshMixed.position.z = 650;
+				meshMixed.position.x = 25;
 				scene.add( meshMixed );
 
 
