@@ -1,24 +1,35 @@
-function loadModel(triArray, polyArray, coordArray){
+function Model(polyArray, coordArray){
+	this.geometry = new THREE.Geometry;
+	this.center = [];
+	
 	for(var i = 0; i < coordArray.length; i++){
-		triArray.vertices.push(new THREE.Vector3(coordArray[i][0], coordArray[i][1], coordArray[i][2]));
+		this.geometry.vertices.push(new THREE.Vector3(coordArray[i][0], coordArray[i][1], coordArray[i][2]));
 	}
 	for(var i = 0; i < polyArray.length; i++){
 		for(var j = 3; j < polyArray[i].length; j++){
 			var vert1 = [polyArray[i][1]-1];
 			var vert2 = [polyArray[i][j-1]-1];
 			var vert3 = [polyArray[i][j]-1];
-			triArray.faces.push(new THREE.Face3(vert1, vert2, vert3));
+			this.geometry.faces.push(new THREE.Face3(vert1, vert2, vert3));
 		}
 	}
-	triArray.verticesNeedUpdate = true;
-	triArray.elementsNeedUpdate = true;
-	/*for(var i = 0; i < polyArray.length; i++){
-		for(var j = 3; j < polyArray[i].length; j++){
-			var vert1 = coordArray[polyArray[i][1]-1];
-			var vert2 = coordArray[polyArray[i][j-1]-1];
-			var vert3 = coordArray[polyArray[i][j]-1];
-			triArray.push(new THREE.Vector3(coordArray[vert1], coordArray[vert2], coordArray[vert3]));
-		}
-	}*/
-	return;
-}
+	var xLargest, xSmallest, yLargest, ySmallest, zLargest, zSmallest;
+	for(var i = 0; i < coordArray.length; i++){
+		if (coordArray[i][0] > xLargest)
+			xLargest = coordArray[i][0];
+		if (coordArray[i][0] < xSmallest)
+			xSmallest = coordArray[i][0];
+		if (coordArray[i][1] > yLargest)
+			yLargest = coordArray[i][1];
+		if (coordArray[i][1] < ySmallest)
+			ySmallest = coordArray[i][1];
+		if (coordArray[i][2] > zLargest)
+			zLargest = coordArray[i][2];
+		if (coordArray[i][2] < zSmallest)
+			zSmallest = coordArray[i][2];
+	}
+	
+	this.center[0] = xLargest + xSmallest;
+	this.center[1] = yLargest + ySmallest;
+	this.center[2] = zLargest + zSmallest;
+};

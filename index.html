@@ -17,6 +17,7 @@
 		<script src = "shark.poly.js"></script>
 		<script src = "shark.coor.js"></script>
 		<script src = "modelLoader.js"></script>
+		<script src = "OrbitControls.js"></script>
 
 		<script type="x-shader/x-vertex" id="vertexShader">
 
@@ -56,7 +57,7 @@
 
 		<script>
 
-			var camera, scene, renderer;
+			var camera, cameraController, scene, renderer;
 			var meshTris, meshLines, meshMixed;
 
 			init();
@@ -64,10 +65,11 @@
 
 			function init() {
 
-				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.z = 800;
-
 				scene = new THREE.Scene();
+				
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( 0, 0, 800);
+				camera.lookAt(scene.position);
 
 				var size = 150;
 
@@ -120,12 +122,11 @@
 				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
-				var geometry = new THREE.Geometry;
-				loadModel(geometry, SHARK_POLY, SHARK_COORD);
-				geometry.applyMatrix(m2);
-				geometry.applyMatrix(m1);
-				geometry.computeFaceNormals();
-				geometry.computeVertexNormals();
+				var model = new Model(SHARK_POLY, SHARK_COORD);
+				model.geometry.applyMatrix(m2);
+				model.geometry.applyMatrix(m1);
+				model.geometry.computeFaceNormals();
+				model.geometry.computeVertexNormals();
 				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, opacity: 0.2});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
@@ -135,7 +136,7 @@
 
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
-				var meshMixed = new THREE.Mesh( geometry, material );
+				var meshMixed = new THREE.Mesh( model.geometry, material );
 				meshMixed.position.z = 650;
 				meshMixed.position.x = 25;
 				scene.add( meshMixed );
@@ -147,6 +148,9 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
+				
+				cameraController = new THREE.OrbitControls(camera, renderer.domElement);
+				cameraController.addEventListener('change', render);
 
 				// events
 
@@ -171,6 +175,11 @@
 
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
+			}
+			
+			function render() {
+				renderer.render( scene, camera );
+				stats.update();
 			}
 
 		</script>
