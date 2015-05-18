@@ -13,8 +13,8 @@ function Model(polyArray, coordArray){
 			this.geometry.faces.push(new THREE.Face3(vert1, vert2, vert3));
 		}
 	}
-	var xLargest, xSmallest, yLargest, ySmallest, zLargest, zSmallest;
-	for(var i = 0; i < coordArray.length; i++){
+	var xLargest = coordArray[0][0], xSmallest = coordArray[0][0], yLargest = coordArray[0][1], ySmallest = coordArray[0][1], zLargest = coordArray[0][2], zSmallest = coordArray[0][2];
+	for(var i = 1; i < coordArray.length; i++){
 		if (coordArray[i][0] > xLargest)
 			xLargest = coordArray[i][0];
 		if (coordArray[i][0] < xSmallest)

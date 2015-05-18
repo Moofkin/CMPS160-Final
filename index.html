@@ -59,7 +59,8 @@
 
 			var camera, cameraController, scene, renderer;
 			var meshTris, meshLines, meshMixed;
-
+			var floorTexture = THREE.ImageUtils.loadTexture( "checkboard.png" );
+			
 			init();
 			renderer.render( scene, camera );
 
@@ -68,7 +69,7 @@
 				scene = new THREE.Scene();
 				
 				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.set( 0, 0, 800);
+				camera.position.set( 0, 0, 100);
 				camera.lookAt(scene.position);
 
 				var size = 150;
@@ -116,18 +117,24 @@
 				m1.makeRotationY(45);
 				m2.makeRotationZ(-25);
 				
-				var floorGeometry = new THREE.BoxGeometry( 10000, 10000, 1);
-				var floorMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide} );
-				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+				var skyBoxGeometry = new THREE.BoxGeometry( 2000, 2000, 2000 );
+				var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide, depthWrite: false, depthTest: false } );
+				var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+				scene.add(skyBox);
+				scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
+				
+				var floorGeometry = new THREE.PlaneGeometry(200, 200, 10, 10);
+				floorGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(67.5));
+				var floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture});
+				var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+				floor.position.set(0, -30, 0);
 				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
 				var model = new Model(SHARK_POLY, SHARK_COORD);
-				model.geometry.applyMatrix(m2);
-				model.geometry.applyMatrix(m1);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, opacity: 0.2});
+				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, reflectivity: 5, refractionRatio: 1.52, opacity: 0.2, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
 				//var valuesMixed = attributesMixed.center.value;
@@ -137,8 +144,6 @@
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
 				var meshMixed = new THREE.Mesh( model.geometry, material );
-				meshMixed.position.z = 650;
-				meshMixed.position.x = 25;
 				scene.add( meshMixed );
 
 
@@ -158,16 +163,6 @@
 
 			}
 
-			function setupAttributes( geometry, values ) {
-
-				for( var f = 0; f < geometry.faces.length; f ++ ) {
-
-					values[ f ] = [ new THREE.Vector3( 1, 0, 0 ), new THREE.Vector3( 0, 1, 0 ), new THREE.Vector3( 0, 0, 1 ) ];
-
-				}
-
-			}
-
 			function onWindowResize() {
 
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -179,7 +174,6 @@
 			
 			function render() {
 				renderer.render( scene, camera );
-				stats.update();
 			}
 
 		</script>
