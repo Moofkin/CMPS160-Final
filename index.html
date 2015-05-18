@@ -68,7 +68,7 @@
 
 				scene = new THREE.Scene();
 				
-				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 4000 );
 				camera.position.set( 0, 0, 100);
 				camera.lookAt(scene.position);
 
@@ -117,8 +117,8 @@
 				m1.makeRotationY(45);
 				m2.makeRotationZ(-25);
 				
-				var skyBoxGeometry = new THREE.BoxGeometry( 2000, 2000, 2000 );
-				var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide, depthWrite: false, depthTest: false } );
+				var skyBoxTexture = THREE.ImageUtils.loadTexture( "sky.png");
+				var skyBoxGeometry = new THREE.SphereGeometry(2000, 32, 32);
 				var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 				scene.add(skyBox);
 				scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
@@ -155,6 +155,7 @@
 				document.body.appendChild( renderer.domElement );
 				
 				cameraController = new THREE.OrbitControls(camera, renderer.domElement);
+				cameraController.maxDistance = 1500;
 				cameraController.addEventListener('change', render);
 
 				// events
