@@ -117,9 +117,22 @@
 				m1.makeRotationY(45);
 				m2.makeRotationZ(-25);
 				
-				var skyBoxTexture = THREE.ImageUtils.loadTexture( "sky.png");
-				var skyBoxGeometry = new THREE.SphereGeometry(2000, 32, 32);
-				var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+				var textures = ["posx.jpg", "negx.jpg", "posy.jpg", "negy.jpg", "posz.jpg", "negz.jpg"];
+				
+				var materialArray = [];
+				for (var i = 0; i < 6; i++)
+					materialArray.push( new THREE.MeshBasicMaterial({
+						map: THREE.ImageUtils.loadTexture(textures[i]),
+						side: THREE.BackSide
+					}));
+				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+				
+				var reflectionCube = THREE.ImageUtils.loadTextureCube( textures );
+				reflectionCube.format = THREE.RGBFormat;
+				
+				var skyBoxGeometry = new THREE.BoxGeometry(2000, 2000, 2000, 1, 1, 1);
+				var skyBoxMaterial = new THREE.MeshBasicMaterial( {color: 0x9999ff, side: THREE.BackSide, depthWrite: false, depthTest: false} );
+				var skyBox = new THREE.Mesh( skyBoxGeometry, skyMaterial );
 				scene.add(skyBox);
 				scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
 				
@@ -134,7 +147,7 @@
 				var model = new Model(SHARK_POLY, SHARK_COORD);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, reflectivity: 5, refractionRatio: 1.52, opacity: 0.2, depthWrite: false, depthTest: false});
+				var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
 				//var valuesMixed = attributesMixed.center.value;
@@ -155,7 +168,7 @@
 				document.body.appendChild( renderer.domElement );
 				
 				cameraController = new THREE.OrbitControls(camera, renderer.domElement);
-				cameraController.maxDistance = 1500;
+				cameraController.maxDistance = 15000;
 				cameraController.addEventListener('change', render);
 
 				// events
