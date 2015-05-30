@@ -131,8 +131,11 @@
 					}));
 				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
 				
-				var reflectionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeRefractionMapping);
+				var reflectionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeReflectionMapping);
 				reflectionCube.format = THREE.RGBFormat;
+				
+				var refractionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeRefractionMapping);
+				refractionCube.format = THREE.RGBFormat;
 				
 				var skyBoxGeometry = new THREE.BoxGeometry(2000, 2000, 2000, 1, 1, 1);
 				var skyBoxMaterial = new THREE.MeshBasicMaterial( {color: 0x9999ff, side: THREE.BackSide, depthWrite: false, depthTest: false} );
@@ -151,7 +154,8 @@
 				var model = new Model(SHARK_POLY, SHARK_COORD);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 0.6, /*shading: THREE.FlatShading/*reflectivity:0.5, transparent: true, opacity: 0.5, depthTest: false, depthWrite:false*/}); 
+				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
+				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 0.9, transparent: true, opacity: 0.6, depthTest: true, depthWrite:true}); 
 				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
@@ -162,8 +166,9 @@
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
 				var meshMixed = new THREE.Mesh( model.geometry, material );
+				var test = new THREE.Mesh(model.geometry, material2)
 				scene.add( meshMixed );
-
+				scene.add(test);
 
 				// renderer
 
