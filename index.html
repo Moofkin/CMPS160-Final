@@ -16,6 +16,10 @@
 		<script src = "three.js"></script>
 		<script src = "shark.poly.js"></script>
 		<script src = "shark.coor.js"></script>
+		<script src = "enterprise.poly.js"></script>
+		<script src = "enterprise.coor.js"></script>
+		<script src = "icosahedron.poly.js"></script>
+		<script src = "icosahedron.coor.js"></script>
 		<script src = "modelLoader.js"></script>
 		<script src = "OrbitControls.js"></script>
 
@@ -105,11 +109,11 @@
 
 				// wireframe using gl.TRIANGLES (mixed triangles and quads)
 				var light = new THREE.PointLight(0xFFFFFF);
-				light.position.set(50, 0, 675);
+				light.position.set(0, 600, 0);
 				scene.add(light);
 				
-				var aLight = new THREE.AmbientLight(0x333333);
-				aLight.position.set(light.position);
+				//var aLight = new THREE.AmbientLight(0xE0FFF0);
+				var aLight = new THREE.AmbientLight(0xFFFFFF);
 				scene.add(aLight);
 	
 				var m1 = new THREE.Matrix4();
@@ -147,7 +151,7 @@
 				var model = new Model(SHARK_POLY, SHARK_COORD);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 0.6, reflectivity:0.5, transparent: true, opacity: 0.5, depthTest: false, depthWrite:false}); 
+				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 0.6, /*shading: THREE.FlatShading/*reflectivity:0.5, transparent: true, opacity: 0.5, depthTest: false, depthWrite:false*/}); 
 				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
