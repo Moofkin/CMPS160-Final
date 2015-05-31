@@ -60,9 +60,14 @@
 		</script>
 
 		<script>
-
+			var models = [[SHARK_POLY, SHARK_COORD], [ENTERPRISE_POLY, ENTERPRISE_COORD], [ICOSAHEDRON_POLY, ICOSAHEDRON_COORD]];
+			var model_id = 0;
+			var model_poly = models[model_id][0];
+			var model_coord = models[model_id][1];
+			var reflectionCube;
+			var refractionCube;
 			var camera, cameraController, scene, renderer;
-			var meshTris, meshLines, meshMixed;
+			var meshTris, meshLines, meshMixed, test, model;
 			var floorTexture = THREE.ImageUtils.loadTexture( "checkboard.png" );
 			
 			init();
@@ -131,10 +136,10 @@
 					}));
 				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
 				
-				var reflectionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeReflectionMapping);
+				reflectionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeReflectionMapping);
 				reflectionCube.format = THREE.RGBFormat;
 				
-				var refractionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeRefractionMapping);
+				refractionCube = THREE.ImageUtils.loadTextureCube( textures, THREE.CubeRefractionMapping);
 				refractionCube.format = THREE.RGBFormat;
 				
 				var skyBoxGeometry = new THREE.BoxGeometry(2000, 2000, 2000, 1, 1, 1);
@@ -151,11 +156,11 @@
 				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
-				var model = new Model(SHARK_POLY, SHARK_COORD);
+				var model = new Model(model_poly, model_coord);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
 				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
-				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 0.9, transparent: true, opacity: 0.6, depthTest: true, depthWrite:true}); 
+				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
 				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
@@ -166,7 +171,7 @@
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
 				var meshMixed = new THREE.Mesh( model.geometry, material );
-				var test = new THREE.Mesh(model.geometry, material2)
+				var test = new THREE.Mesh(model.geometry, material2);
 				scene.add( meshMixed );
 				scene.add(test);
 
@@ -178,7 +183,7 @@
 				document.body.appendChild( renderer.domElement );
 				
 				cameraController = new THREE.OrbitControls(camera, renderer.domElement);
-				cameraController.maxDistance = 15000;
+				cameraController.maxDistance = 1500;
 				cameraController.addEventListener('change', render);
 
 				// events
@@ -199,8 +204,51 @@
 			function render() {
 				renderer.render( scene, camera );
 			}
+			
+			function change_model(i){
+				model_id += i;
+				if(model_id == -1){
+					model_id = models.length-1;
+				}
+				else if(model_id == models.length){
+					model_id == 0;
+				}
+				model_poly = models[model_id][0];
+				model_coord = models[model_id][1];
+				scene.remove(meshMixed);
+				scene.remove(test);
+				model = new Model(model_poly, model_coord);
+				model.geometry.computeFaceNormals();
+				model.geometry.computeVertexNormals();
+				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
+				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, /*refractionRatio: 1.52,*/ combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
+				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
+
+				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
+				//var valuesMixed = attributesMixed.center.value;
+
+				//setupAttributes( mixedGeometry, valuesMixed );
+
+				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
+
+				var meshMixed = new THREE.Mesh( model.geometry, material );
+				var test = new THREE.Mesh(model.geometry, material2);
+				scene.add( meshMixed );
+				scene.add(test);
+			}
+			
+			window.onkeypress = function(e){
+				switch(e.charCode) {
+					case 49:
+						change_model(-1);
+						break;
+						
+					case 50:
+						change_model(1);
+						break;
+				}
+			};
 
 		</script>
-
 	</body>
 </html>
