@@ -170,10 +170,8 @@
 
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
-				var meshMixed = new THREE.Mesh( model.geometry, material );
-				var test = new THREE.Mesh(model.geometry, material2);
+				meshMixed = THREE.SceneUtils.createMultiMaterialObject(model.geometry, [material, material2]);
 				scene.add( meshMixed );
-				scene.add(test);
 
 				// renderer
 
@@ -216,7 +214,6 @@
 				model_poly = models[model_id][0];
 				model_coord = models[model_id][1];
 				scene.remove(meshMixed);
-				scene.remove(test);
 				model = new Model(model_poly, model_coord);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
@@ -231,10 +228,8 @@
 
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
-				var meshMixed = new THREE.Mesh( model.geometry, material );
-				var test = new THREE.Mesh(model.geometry, material2);
+				meshMixed = THREE.SceneUtils.createMultiMaterialObject(model.geometry, [material, material2]);
 				scene.add( meshMixed );
-				scene.add(test);
 			}
 			
 			window.onkeypress = function(e){
