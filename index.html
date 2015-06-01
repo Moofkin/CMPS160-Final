@@ -14,6 +14,7 @@
 	<body>
 
 		<script src = "three.js"></script>
+		<script src = "dat.gui.min.js"></script>
 		<script src = "shark.poly.js"></script>
 		<script src = "shark.coor.js"></script>
 		<script src = "enterprise.poly.js"></script>
@@ -118,7 +119,7 @@
 				scene.add(light);
 				
 				//var aLight = new THREE.AmbientLight(0xE0FFF0);
-				var aLight = new THREE.AmbientLight(0xFFFFFF);
+				var aLight = new THREE.AmbientLight(0x333333);
 				scene.add(aLight);
 	
 				var m1 = new THREE.Matrix4();
@@ -187,6 +188,64 @@
 				// events
 
 				window.addEventListener( 'resize', onWindowResize, false );
+				
+				//-------------------------------MENU THINGS---------------------------------------------
+				gui = new dat.GUI();
+				
+				parameters = 
+				{
+					x: 0, y: 0, z: 0,
+					rotX: 0, rotY: 0, rotZ: 0,
+					scX:1, scY: 1, scZ: 1,
+					color:  "#ffffff", // color (change "#" to "0x")
+					crystalline: false,
+					reset: function() { /*reset()*/ }
+				};
+			
+				
+				var folder1 = gui.addFolder('Position');
+				var posX = folder1.add( parameters, 'x' ).min(-200).max(200).step(1).listen();
+				var posY = folder1.add( parameters, 'y' ).min(-200).max(200).step(1).listen();
+				var posZ = folder1.add( parameters, 'z' ).min(-200).max(200).step(1).listen();
+				folder1.open();
+				
+				var folder2 = gui.addFolder('Rotation');
+				var rotationX = folder2.add(parameters, 'rotX').min(-360).max(360).step(1).listen();
+				var rotationY = folder2.add(parameters, 'rotY').min(-360).max(360).step(1).listen();
+				var rotationZ = folder2.add(parameters, 'rotZ').min(-360).max(360).step(1).listen();
+				folder2.open();
+				
+				folder3 = gui.addFolder('Scale');
+				var scaleX = folder3.add(parameters, 'scX').min(0).max(5).step(1).listen();
+				var scaleY = folder3.add(parameters, 'scY').min(0).max(5).step(1).listen();
+				var scaleZ = folder3.add(parameters, 'scZ').min(0).max(5).step(1).listen();
+				folder3.open();
+				
+				var modelColor = gui.addColor( parameters, 'color' ).name('Color').listen();
+				
+				var crystal = gui.add(parameters, 'crystalline').name('Crystalline').listen();
+				
+				gui.add( parameters, 'reset' ).name("Reset Parameters");
+				
+				//---------------------DO THE THINGS HERE--------------------------------
+				posX.onChange(function(value) {   /*do something*/   });
+				posY.onChange(function(value) {   /*do something*/   });
+				posZ.onChange(function(value) {   /*do something*/   });
+				
+				rotationX.onChange(function(value) {   /*do something*/   });
+				rotationY.onChange(function(value) {   /*do something*/   });
+				rotationZ.onChange(function(value) {   /*do something*/   });
+				
+				scaleX.onChange(function(value) {   /*do something*/   });
+				scaleX.onChange(function(value) {   /*do something*/   });
+				scaleX.onChange(function(value) {   /*do something*/   });
+							
+				modelColor.onChange(function(value) {   sphere.material.color.setHex( value.replace("#", "0x") ); /*do something else*/  });
+				
+				crystal.onChange(function(value) {   /*do something*/});
+				
+				gui.open();
+				//-------------------------END MENU THINGS----------------------------------------------
 
 			}
 
