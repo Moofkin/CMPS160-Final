@@ -70,6 +70,8 @@
 			var camera, cameraController, scene, renderer;
 			var meshTris, meshLines, meshMixed, test, model;
 			var floorTexture = THREE.ImageUtils.loadTexture( "checkboard.png" );
+			var color = 0xFFFFFF;
+			var shade = THREE.SmoothShading;
 			
 			init();
 			renderer.render( scene, camera );
@@ -157,11 +159,11 @@
 				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
-				var model = new Model(model_poly, model_coord);
+				model = new Model(model_poly, model_coord);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
-				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
+				var material = new THREE.MeshPhongMaterial({color: color, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, shading: shade, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
+				var material2 = new THREE.MeshPhongMaterial({color: color, envMap: reflectionCube, refractionRatio: 1.52, combine: THREE.MixOperation, shading: shade, reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
 				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
@@ -171,8 +173,10 @@
 
 				//var materialMixed = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesMixed, vertexShader: vertexShader, fragmentShader: fragmentShader } );
 
+				console.log(model.geometry.vertices, model.geometry.faces);
 				meshMixed = THREE.SceneUtils.createMultiMaterialObject(model.geometry, [material, material2]);
 				scene.add( meshMixed );
+				console.log(meshMixed);
 
 				// renderer
 
@@ -209,7 +213,7 @@
 				var posZ = folder1.add( parameters, 'z' ).min(-200).max(200).step(1).listen();
 				folder1.open();
 				
-				var folder2 = gui.addFolder('Rotation');
+				folder2 = gui.addFolder('Rotation');
 				var rotationX = folder2.add(parameters, 'rotX').min(-360).max(360).step(1).listen();
 				var rotationY = folder2.add(parameters, 'rotY').min(-360).max(360).step(1).listen();
 				var rotationZ = folder2.add(parameters, 'rotZ').min(-360).max(360).step(1).listen();
@@ -220,7 +224,6 @@
 				var scaleY = folder3.add(parameters, 'scY').min(0).max(5).step(1).listen();
 				var scaleZ = folder3.add(parameters, 'scZ').min(0).max(5).step(1).listen();
 				folder3.open();
-				
 				var modelColor = gui.addColor( parameters, 'color' ).name('Color').listen();
 				
 				var crystal = gui.add(parameters, 'crystalline').name('Crystalline').listen();
@@ -228,21 +231,21 @@
 				gui.add( parameters, 'reset' ).name("Reset Parameters");
 				
 				//---------------------DO THE THINGS HERE--------------------------------
-				posX.onChange(function(value) {   /*do something*/   });
-				posY.onChange(function(value) {   /*do something*/   });
-				posZ.onChange(function(value) {   /*do something*/   });
+				posX.onChange(function(value) {   meshMixed.position.x = value; render();   });
+				posY.onChange(function(value) {   meshMixed.position.y = value; render();   });
+				posZ.onChange(function(value) {   meshMixed.position.z = value; render();   });
 				
-				rotationX.onChange(function(value) {   /*do something*/   });
-				rotationY.onChange(function(value) {   /*do something*/   });
-				rotationZ.onChange(function(value) {   /*do something*/   });
+				rotationX.onChange(function(value) {   meshMixed.rotation.x = value*((Math.PI)/180); render();   });
+				rotationY.onChange(function(value) {   meshMixed.rotation.y = value*((Math.PI)/180); render();   });
+				rotationZ.onChange(function(value) {   meshMixed.rotation.z = value*((Math.PI)/180); render();   });
 				
-				scaleX.onChange(function(value) {   /*do something*/   });
-				scaleX.onChange(function(value) {   /*do something*/   });
-				scaleX.onChange(function(value) {   /*do something*/   });
+				scaleX.onChange(function(value) {   meshMixed.scale.x = value; render();   });
+				scaleY.onChange(function(value) {   meshMixed.scale.y = value; render();   });
+				scaleZ.onChange(function(value) {   meshMixed.scale.z = value; render();   });
 							
-				modelColor.onChange(function(value) {   sphere.material.color.setHex( value.replace("#", "0x") ); /*do something else*/  });
+				modelColor.onChange(function(value) {   /*sphere.material.color.setHex( value.replace("#", "0x") );*/ var clr = value; clr = new THREE.Color(clr); console.log(clr); meshMixed.children[0].material.color = clr; meshMixed.children[1].material.color = clr; render(); console.log(meshMixed); /*do something else*/   });
 				
-				crystal.onChange(function(value) {   /*do something*/});
+				crystal.onChange(function(value) {   if(value){shade = THREE.FlatShading; change_model(0);}else{shade = THREE.SmoothShading; change_model(0);} /*if(value){shade = THREE.FlatShading; meshMixed.children[0].material.shading = THREE.FlatShading; meshMixed.children[1].material.shading = THREE.FlatShading; render();}else{shade = THREE.SmoothShading; meshMixed.children[0].material.shading = THREE.SmoothShading; meshMixed.children[1].material.shading = THREE.SmoothShading; render();}*/   });
 				
 				gui.open();
 				//-------------------------END MENU THINGS----------------------------------------------
@@ -264,11 +267,12 @@
 			
 			function change_model(i){
 				model_id += i;
-				if(model_id == -1){
+
+				if(model_id < 0){
 					model_id = models.length-1;
 				}
 				else if(model_id == models.length){
-					model_id == 0;
+					model_id = 0;
 				}
 				model_poly = models[model_id][0];
 				model_coord = models[model_id][1];
@@ -276,8 +280,8 @@
 				model = new Model(model_poly, model_coord);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, /*shading: THREE.FlatShading, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
-				var material2 = new THREE.MeshPhongMaterial({color: 0xFFFFFF, envMap: reflectionCube, /*refractionRatio: 1.52,*/ combine: THREE.MixOperation, /*shading: THREE.FlatShading, */reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
+				var material = new THREE.MeshPhongMaterial({color: color, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, shading: shade, /*reflectivity: 0.5, /*transparent: true, opacity: 0.6, depthTest: false, depthWrite:false*/});
+				var material2 = new THREE.MeshPhongMaterial({color: color, envMap: reflectionCube, /*refractionRatio: 1.52,*/ combine: THREE.MixOperation, shading: shade, reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
 				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
@@ -289,6 +293,7 @@
 
 				meshMixed = THREE.SceneUtils.createMultiMaterialObject(model.geometry, [material, material2]);
 				scene.add( meshMixed );
+				render();
 			}
 			
 			window.onkeypress = function(e){
@@ -302,6 +307,28 @@
 						break;
 				}
 			};
+			
+			function edit_model(){
+				var scale = new THREE.Matrix4();
+				var trans = new THREE.Matrix4();
+				scale.set(sX,0,0,0,0,sY,0,0,0,0,sZ,0,0,0,0,1);
+				trans.set(1,0,0,pX,0,1,0,pY,0,0,1,pZ,0,0,0,1);
+				var angle = new THREE.Euler(rX, rY, rZ, "XYZ");
+				var rot = new THREE.Matrix4();
+				rot.makeRotationFromEuler(angle);
+				rot.multiplyMatrices(rot, trans);
+				rot.multiplyMatrices(rot, scale);
+				for(i = 0; i < model.geometry.vertices.length; ++i){
+					vert = new THREE.Vector4(model.vertices[i].x, model.vertices[i].y, model.vertices[i].z, 1.0);
+					vert.applyMatrix4(rot);
+					model.geometry.vertices[i].x = vert.x;
+					model.geometry.vertices[i].y = vert.y;
+					model.geometry.vertices[i].z = vert.z;
+				}
+				model.geometry.verticesNeedUpdate = true;
+				render();
+			}
+			
 
 		</script>
 	</body>
