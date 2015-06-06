@@ -95,34 +95,8 @@
 
 				var size = 150;
 
-				//var geometryLines = new THREE.BoxGeometry( size, size, size );
-				//var geometryTris = new THREE.BoxGeometry( size, size, size );
-
-				// wireframe using gl.LINES
-
-				//var materialLines = new THREE.MeshBasicMaterial( { wireframe: true } );
-
-				//meshLines = new THREE.Mesh( geometryLines, materialLines );
-				//meshLines.position.x = -150;
-				//scene.add( meshLines );
-
-				//
-
 				var vertexShader = document.getElementById( 'vertexShader' ).textContent;
 				var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
-
-				// wireframe using gl.TRIANGLES (interpreted as triangles)
-
-				//var attributesTris = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
-				//var valuesTris = attributesTris.center.value;
-
-				//setupAttributes( geometryTris, valuesTris );
-
-				//var materialTris = new THREE.ShaderMaterial( { uniforms: {}, attributes: attributesTris, vertexShader: vertexShader, fragmentShader: fragmentShader } );
-
-				//meshTris = new THREE.Mesh( geometryTris, materialTris );
-				//meshTris.position.x = 150;
-				//scene.add( meshTris );
 
 				// wireframe using gl.TRIANGLES (mixed triangles and quads)
 				var light = new THREE.PointLight(0xFFFFFF);
@@ -159,22 +133,14 @@
 				var skyBox = new THREE.Mesh( skyBoxGeometry, skyMaterial );
 				scene.add(skyBox);
 				scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
-				
-				var floorGeometry = new THREE.PlaneGeometry(200, 200, 10, 10);
-				floorGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(67.5));
-				var floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture});
-				var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-				floor.position.set(0, -30, 0);
-				scene.add(floor);
 
 				//var geometry = new THREE.SphereGeometry( size / 2, 32, 16 );
 				model = new Model(modelPoly, modelCoord);
 				model.geometry.computeFaceNormals();
 				model.geometry.computeVertexNormals();
-				var material = new THREE.MeshPhongMaterial({color: color, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, shading: shade, transparent: true, opacity: 0.6, depthTest: true, depthWrite:true});
-				var material2 = new THREE.MeshPhongMaterial({color: color, envMap: reflectionCube, combine: THREE.MixOperation, shading: shade, reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true});
-				var material3 = new THREE.MeshPhongMaterial({color: color, combine: THREE.MixOperation, shading: shade, transparent: true, opacity: 0.2, depthTest: true, depthWrite:true}); 
-				//var material = new THREE.MeshPhongMaterial({color: 0x660066, specular: 0xFFFFFF, transparent: true, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.6, refractionRatio: 1.52, opacity: 0.4, depthWrite: false, depthTest: false});
+				var material = new THREE.MeshPhongMaterial({color: color, envMap: refractionCube, refractionRatio: 1.52, combine: THREE.MixOperation, shading: shade, transparent: true, opacity: 0.6, depthTest: false, depthWrite:false});
+				var material2 = new THREE.MeshPhongMaterial({color: color, envMap: reflectionCube, combine: THREE.MixOperation, shading: shade, reflectivity: 1.0, transparent: true, opacity: 0.2, depthTest: false, depthWrite:false});
+				var material3 = new THREE.MeshPhongMaterial({color: color, combine: THREE.MixOperation, shading: shade, transparent: true, opacity: 0.2, depthTest: false, depthWrite:false}); 
 
 				//var attributesMixed = { center: { type: 'v3', boundTo: 'faceVertices', value: [] } };
 				//var valuesMixed = attributesMixed.center.value;

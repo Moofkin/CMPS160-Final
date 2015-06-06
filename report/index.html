@@ -1,0 +1,137 @@
+<!-- =================================================================================================-->
+<!-- name: Lauren Cunningham & Andrew Parvis                                                          -->
+<!-- cruzid: lccunnin, aparvis                                                                        -->
+<!-- date: 6/5/2015                                                                                   -->
+<!-- description: This is the "report" for our final project, the Glass Solid Viewer.                 -->
+<!-- =================================================================================================-->
+
+<!DOCTYPE html>
+
+<!-- CSS Code -->
+<style type="text/css" scoped>
+	table.GeneratedTable {
+	width:100%;
+	background-color:#FFFFFF;
+	border-collapse:collapse;border-width:1px;
+	border-color:#000000;
+	border-style:solid;
+	color:#000000;
+	}
+	
+	table.GeneratedTable td, table.GeneratedTable th {
+	border-width:1px;
+	border-color:#000000;
+	border-style:solid;
+	padding:3px;
+	}
+	
+	table.GeneratedTable thead {
+	background-color:#FFFFFF;
+	}
+</style>
+
+<div align="right">
+  Lauren Cunningham.............<br>
+  Andrew Parvis......................
+</div> 
+
+<div align = "center">
+	<h1>Glass Solid Viewer</h1>
+	
+	<p>We wish to create an application that accurately depicts a glass material on a number of different models.<br> This includes correct diffuse/specular lighting for 
+		semi-transparent to transparent materials, as well as the reflection and refraction that are indicative of glass.<br> Functionality includes being able to change
+		basic properties of the glass material such as color and transparency, being able to rotate the camera around object, and being able to rotate the object itself.
+	</p>
+</div>
+
+<p><br><i>*This feature will use the three.js library</i></p>
+
+<p><br><b>User Features:</b><br>
+	View glass solids on a fully-rendered display.<br>
+	Toggle through different preset glass models.<br>
+	Interact with the application to rotate the models.<br>
+	Full 360 degrees of camera rotation.<br>
+	Change the color and transparency of each glass model.<br><br>
+</p>
+
+<!-- HTML Code -->
+<table class="GeneratedTable">
+	<thead>
+		<tr>
+			<th>Timeframe</th>
+			<th>Task(s)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Now - 5/11</td>
+			<td>Basic framework written, should be able to:</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Import models from .poly/.coor files</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Render with non-transparent smooth shading</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Render diffuse lighting</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Render specular lighting</td>
+		</tr>
+		<tr>
+			<td>5/11 - 5/18</td>
+			<td>Add ability to rotate models</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Add ability to rotate camera position</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Research transparent solids</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Add background (something besides a uniform color) to the 3D space</td>
+		</tr>
+		<tr>
+			<td>5/18 - 5/25</td>
+			<td>Add solid transparency</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Add proper reflection</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>General debugging</td>
+		</tr>
+		<tr>
+			<td>5/25 - 6/1</td>
+			<td>Add proper refraction</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>General debugging</td>
+		</tr>
+		<tr>
+			<td>6/1 - 6/9</td>
+			<td>Add diffraction(?)</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>General debugging</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br><b>References:</b><br>
+	Properties of Glass (the optical properties are the important bit): <a href="http://www.saint-gobain-sekurit.com/glazingcatalouge/glass-properties#a3">http://www.saint-gobain-sekurit.com/glazingcatalouge/glass-properties#a3</a><br>
+	Calculating Glass Properties: <a href="http://en.wikipedia.org/wiki/Calculation_of_glass_properties">http://en.wikipedia.org/wiki/Calculation_of_glass_properties</a><br>
+	Tutorial on the Using the Depth Buffer and Transparency: <a href="http://learningwebgl.com/blog/?p=859">http://learningwebgl.com/blog/?p=859</a><br>
+</p>
