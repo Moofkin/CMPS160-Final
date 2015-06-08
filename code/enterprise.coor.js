@@ -1,3 +1,12 @@
+/*name: Lauren Cunningham and Andrew Parvis
+	cruzid: lccunnin, aparvis
+	date: 6/9/2015
+	description: The Glass Solid Viewer allows the user to view a number of present models with a glass texture.
+					In addition, it allows for camera and model manipulations, toggling between flat and smooth shading, and changing the glass' color.
+					For information on running this application, view the README, or run the "index.html" file located in the report folder. */
+
+// This file contains the coord data for the enterprise model
+
 var ENTERPRISE_COORD = [
 	[0.000000,5.000000,100.000000],
 	[50.000000,5.000000,86.602539],

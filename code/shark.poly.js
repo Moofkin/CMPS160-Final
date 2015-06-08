@@ -1,3 +1,12 @@
+/*name: Lauren Cunningham and Andrew Parvis
+	cruzid: lccunnin, aparvis
+	date: 6/9/2015
+	description: The Glass Solid Viewer allows the user to view a number of present models with a glass texture.
+					In addition, it allows for camera and model manipulations, toggling between flat and smooth shading, and changing the glass' color.
+					For information on running this application, view the README, or run the "index.html" file located in the report folder. */
+
+// This file contains the poly data for the shark model
+
 var SHARK_POLY = [
 	["body",2356,2560,2367,2284,2290],
 	["body",2388,2351,2293,2276],
