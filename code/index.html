@@ -32,13 +32,16 @@
 		<script src = "icosahedron.poly.js"></script>
 		<script src = "icosahedron.coor.js"></script>
 		<script src = "57chevy.js"></script>
-		<script src = "fireplace.js"></script>
-		<script src = "glass.js"></script>
+		<script src = "chair1.js"></script>
+		<script src = "chair2.js"></script>
 		<script src = "guitar.js"></script>
 		<script src = "jadai.js"></script>
 		<script src = "man.js"></script>
 		<script src = "woman.js"></script>
-		<script src = "lamp1.js"></script>
+		<script src = "couch.js"></script>
+		<script src = "kitchen.js"></script>
+		<script scr = "sandal.js"></script>
+		<script src = "stepper.js"></script>
 		<script src = "modelLoader.js"></script>
 		<script src = "OrbitControls.js"></script>
 
@@ -83,7 +86,7 @@
 		<script>
 			
 			//model and model selection things
-			var models = [[SHARK_POLY, SHARK_COORD], [ENTERPRISE_POLY, ENTERPRISE_COORD], [ICOSAHEDRON_POLY, ICOSAHEDRON_COORD], [chevy_poly, chevy_coor], [fireplace_poly, fireplace_coor], [glass_poly, glass_coor], [guitar_poly, guitar_coor], [jadai_poly, jadai_coor], [man_poly, man_coor], [woman_poly, woman_coor], [lamp1_poly, lamp1_coor]];
+			var models = [[SHARK_POLY, SHARK_COORD], [ENTERPRISE_POLY, ENTERPRISE_COORD], [ICOSAHEDRON_POLY, ICOSAHEDRON_COORD], [chevy_poly, chevy_coor], [guitar_poly, guitar_coor], [jadai_poly, jadai_coor], [man_poly, man_coor], [woman_poly, woman_coor], [chair2_poly, chair2_coor], [couch_poly, couch_coor], [kitchen_poly, kitchen_coor], [stepper_poly, stepper_coor]];
 			var modelID = 0;
 			var modelPoly = models[modelID][0];
 			var modelCoord = models[modelID][1];
@@ -104,7 +107,7 @@
 			var shade = THREE.SmoothShading;
 			
 			//names of each model in the menu
-			var modelNames = ["Shark", "Enterprise", "Icosahedron", "Chevy", "Fireplace", "Glass", "Guitar", "Jadai", "Man", "Woman", "Lamp"];
+			var modelNames = ["Shark", "Enterprise", "Icosahedron", "Chevy", "Guitar", "Jadai", "Man", "Woman", "Chair", "Couch", "Kitchen", "Stepper"];
 			
 			init();
 			renderer.render( scene, camera );
