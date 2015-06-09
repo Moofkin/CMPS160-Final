@@ -40,7 +40,6 @@
 		<script src = "woman.js"></script>
 		<script src = "couch.js"></script>
 		<script src = "kitchen.js"></script>
-		<script scr = "sandal.js"></script>
 		<script src = "stepper.js"></script>
 		<script src = "modelLoader.js"></script>
 		<script src = "OrbitControls.js"></script>
@@ -243,19 +242,19 @@
 				//begin menu operations
 				
 				//changes the position of the model, re-renders
-				posX.onChange(function(value) {   meshMixed.position.x = value; render();   });
-				posY.onChange(function(value) {   meshMixed.position.y = value; render();   });
-				posZ.onChange(function(value) {   meshMixed.position.z = value; render();   });
+				posX.onChange(function(value) {   meshMixed.position.x = value; parameters.x = value; render();   });
+				posY.onChange(function(value) {   meshMixed.position.y = value; parameters.y = value; render();   });
+				posZ.onChange(function(value) {   meshMixed.position.z = value; parameters.z = value; render();   });
 				
 				//changes the rotation of the model, re-renders
-				rotationX.onChange(function(value) {   meshMixed.rotation.x = value*((Math.PI)/180); render();   });
-				rotationY.onChange(function(value) {   meshMixed.rotation.y = value*((Math.PI)/180); render();   });
-				rotationZ.onChange(function(value) {   meshMixed.rotation.z = value*((Math.PI)/180); render();   });
+				rotationX.onChange(function(value) {   meshMixed.rotation.x = value*((Math.PI)/180); parameters.rotX = value; render();   });
+				rotationY.onChange(function(value) {   meshMixed.rotation.y = value*((Math.PI)/180); parameters.rotY = value; render();   });
+				rotationZ.onChange(function(value) {   meshMixed.rotation.z = value*((Math.PI)/180); parameters.rotZ = value; render();   });
 				
 				//changes the scaling of the model, re-renders
-				scaleX.onChange(function(value) {   meshMixed.scale.x = value; render();   });
-				scaleY.onChange(function(value) {   meshMixed.scale.y = value; render();   });
-				scaleZ.onChange(function(value) {   meshMixed.scale.z = value; render();   });
+				scaleX.onChange(function(value) {   meshMixed.scale.x = value; parameters.scX = value; render();   });
+				scaleY.onChange(function(value) {   meshMixed.scale.y = value; parameters.scY = value; render();   });
+				scaleZ.onChange(function(value) {   meshMixed.scale.z = value; parameters.scZ = value; render();   });
 							
 				//changes the color of the model, re-renders
 				modelColor.onChange(function(value) {   color = value; var clr = new THREE.Color(color); meshMixed.children[2].material.color = clr; render();   });
